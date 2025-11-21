@@ -1,0 +1,148 @@
+<?php
+$servername = "localhost";
+$username   = "root";
+$password   = "";
+$dbname     = "oho";
+
+// Database connection
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+
+// Agar connection fail ho jaye
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stylish Login Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px 35px;
+            width: 350px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-container h1 {
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0 20px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .login-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .login-container input:focus {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .login-container input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #5563DE, #74ABE2);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(85, 99, 222, 0.5);
+        }
+
+        .login-container input[type="submit"]:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(116, 171, 226, 0.8);
+        }
+
+        .login-container p {
+            margin-top: 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <form method="GET">
+            <h1>login</h1>
+            <input type="text" name="user" placeholder="Enter Username" required>
+            <input type="password" name="pass" placeholder="Enter Password" required>
+            <input type="submit" name="submit" value="Login">
+            <p>Don't have an account? <a href="db.html">Sign up</a></p>
+        </form>
+    </div>
+</body>
+</html>
+
+<?php
+if (isset($_GET['submit'])) {
+    $user = $_GET['user'];
+    $pass = $_GET['pass'];
+
+    $query = "SELECT * FROM account WHERE user='$user' AND pass='$pass'";
+    $data  = mysqli_query($conn, $query);
+
+    $total = mysqli_num_rows($data);
+
+    if ($total == 1) {
+        header('Location: food.html');
+        exit;
+    } else {
+        echo "<script>alert('Login failed! Invalid username or password.');</script>";
+    }
+}
+?>
